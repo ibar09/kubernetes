@@ -14,6 +14,7 @@ spec:
     spec:
       containers:
       - name: nodejs-app
-        image: ihebab09/nodejs-app:v2 
+        image: ihebab09/nodejs-app:v3
         ports:
         - containerPort: 3000
+  
