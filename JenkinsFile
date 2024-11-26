@@ -1,0 +1,53 @@
+pipeline {
+    agent any
+
+    triggers {
+        githubPush()
+    }
+  environment {
+        DOCKER_IMAGE = 'ihebab09/nodejs-app '
+        DOCKER_REGISTRY = 'https://registry.hub.docker.com'
+    } 
+    stages {
+        stage('Clone Git Repository') {
+            steps {
+                git 'https://github.com/ibar09/testd.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build("${DOCKER_IMAGE}:latest")
+                }
+            }
+        }
+
+        stage('Push to DockerHub') {
+            steps {
+                script {
+                    docker.withRegistry(DOCKER_REGISTRY, 'dockerhub-credentials') {
+                        docker.image("${DOCKER_IMAGE}:latest").push()
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    sh 'kubectl apply -f deployment.yaml'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Pipeline completed successfully!"
+        }
+        failure {
+            echo "Pipeline failed."
+        }
+    }
+}
