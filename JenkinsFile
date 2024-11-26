@@ -5,7 +5,7 @@ pipeline {
         githubPush()
     }
   environment {
-        DOCKER_IMAGE = 'ihebab09/nodejs-app '
+        DOCKER_IMAGE = 'ihebab09/nodejs-app'
         DOCKER_REGISTRY = 'https://registry.hub.docker.com'
     } 
     stages {
