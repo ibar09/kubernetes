@@ -9,9 +9,11 @@ pipeline {
         DOCKER_REGISTRY = 'https://registry.hub.docker.com'
     } 
     stages {
-        stage('Clone Git Repository') {
+        stage('Clone Repository') {
             steps {
-                git 'https://github.com/ibar09/testd.git'
+                script {
+                    checkout scm
+                }
             }
         }
 
